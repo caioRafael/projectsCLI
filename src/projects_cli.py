@@ -8,10 +8,8 @@ class ProjectsCLI:
     CLI_VERSION = "1.0.0"
     INI_FILE = "projects.ini"
 
-
     def __init__(self):
         self.__run()
-
 
     def __run(self):
         self.parser = argparse.ArgumentParser(
@@ -22,6 +20,7 @@ class ProjectsCLI:
 
         self.parser.version = self.CLI_VERSION
         self.parser.add_argument("-v", "--version", action="version")
+        self.parser.add_argument("-l","--list", help="lista os diretorios", action="store_true")
 
         subparser = self.parser.add_subparsers(help="Ações Projeto")
 
@@ -30,16 +29,26 @@ class ProjectsCLI:
         parser_args = self.parser.parse_args()
 
         if parser_args: 
-            if parser_args.node:
-                self.__create_node_project()
-                print("ola")
+            try:
+                if parser_args.list:
+                    print("listar todos os projetos")
+                elif parser_args.name:
+                    print("o novo projeto é %s" %(parser_args.name))
+                    if parser_args.template:
+                        print("o template é %s" %parser_args.template)
+            except Exception as e:
+                print("Argumento inválido: {}".format(e))
                 
     def __create_project_parser(self, subparser):
-        self.project_parser = subparser.add_parser("projeto", help="Gerar projeto")
-        self.project_parser.add_argument("--node", "-n", help="gerador de projeto Node.JS", action="store_true", required=False)
+        self.project_parser = subparser.add_parser("create", help="criar um novo projeto")
+        self.project_parser.add_argument("--name","-n", type=str, help="nome do projeto", required=False)
+        self.project_parser.add_argument("--template",
+                                    choices=['python', 'node-ts', 'node-js', 'react-ts', 'react-js'],
+                                    help="template do projeto", 
+                                    required=False)
 
-    def __create_node_project(self):
-        os.system(f"mkdir {path}/teste")
-        os.system(f"cd {path}/teste && yarn init -y && ls")
+    # def __create_node_project(self):
+    #     os.system(f"mkdir {path}/teste")
+    #     os.system(f"cd {path}/teste && yarn init -y && ls")
 
 
