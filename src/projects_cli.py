@@ -1,5 +1,6 @@
 import os
 import argparse
+from projects_control import ProjectsControl
 
 user = os.getlogin()
 path = f'/home/{user}/Área\ de\ Trabalho'
@@ -29,26 +30,25 @@ class ProjectsCLI:
         parser_args = self.parser.parse_args()
 
         if parser_args: 
-            try:
-                if parser_args.list:
-                    print("listar todos os projetos")
-                elif parser_args.name:
-                    print("o novo projeto é %s" %(parser_args.name))
-                    if parser_args.template:
-                        print("o template é %s" %parser_args.template)
-            except Exception as e:
-                print("Argumento inválido: {}".format(e))
+            self.__verify_arguments(parser_args)
                 
     def __create_project_parser(self, subparser):
         self.project_parser = subparser.add_parser("create", help="criar um novo projeto")
         self.project_parser.add_argument("--name","-n", type=str, help="nome do projeto", required=False)
-        self.project_parser.add_argument("--template",
+        self.project_parser.add_argument("--template", "-T",
                                     choices=['python', 'node-ts', 'node-js', 'react-ts', 'react-js'],
                                     help="template do projeto", 
-                                    required=False)
+                                    required=True)
 
-    # def __create_node_project(self):
-    #     os.system(f"mkdir {path}/teste")
-    #     os.system(f"cd {path}/teste && yarn init -y && ls")
-
-
+    def __verify_arguments(self,parser_args):
+        try:
+            if parser_args.list:
+                print("listar todos os projetos")
+            elif parser_args.name:
+                print("o novo projeto é %s" %(parser_args.name))
+                if parser_args.template:
+                    controll = ProjectsControl()
+                    print("o template é %s" %parser_args.template)
+                    controll.createProject(parser_args.template)
+        except Exception as e:
+            print("Argumento inválido: {}".format(e))
