@@ -15,7 +15,7 @@ class ProjectsCLI:
     def __run(self):
         self.parser = argparse.ArgumentParser(
             prog="project",
-            description="Automação para a criação de projetos pessoais(React, node, python e outras linguagens)",
+            description="Automação para a criação de projetos pessoais(React e node)",
             epilog="Desenvolvido por: Caio Rafael",
             usage="%(prog)s [options]")
 
@@ -36,7 +36,7 @@ class ProjectsCLI:
         self.project_parser = subparser.add_parser("create", help="criar um novo projeto")
         self.project_parser.add_argument("--name","-n", type=str, help="nome do projeto", required=False)
         self.project_parser.add_argument("--template", "-T",
-                                    choices=['python', 'node-ts', 'node-js', 'react-ts', 'react-js'],
+                                    choices=['node', 'react'],
                                     help="template do projeto", 
                                     required=True)
 
@@ -46,8 +46,8 @@ class ProjectsCLI:
                 print("listar todos os projetos")
             elif parser_args.name:
                 print("o novo projeto é %s" %(parser_args.name))
+                controll = ProjectsControl(parser_args.name)
                 if parser_args.template:
-                    controll = ProjectsControl()
                     print("o template é %s" %parser_args.template)
                     controll.createProject(parser_args.template)
         except Exception as e:
