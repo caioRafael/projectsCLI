@@ -34,4 +34,3 @@ Foi utilizado _Python_ como linguagem de programação e a biblioteca OS para ge
 ## Autor
 
 - **Caio Rafael** - _Initial work_ - [Linkedin](https://www.linkedin.com/in/caio-rafael-b7022b187/)
-## Youtube Channel
